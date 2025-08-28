@@ -1,5 +1,5 @@
 /** add guest form 8/28/2025 */
-//** update the guest added form  */
+//** update the guest  */
 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
