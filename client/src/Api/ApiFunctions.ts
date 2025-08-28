@@ -38,7 +38,7 @@ export async function createGuest(data : {
 export async function getGuest(){
 
     try {
-        const record = await pb.collection("guests").getOne('id');
+        const record = await pb.collection("guests").getFullList();
         console.log("Get all users");
         return record;
     } catch (error) {
