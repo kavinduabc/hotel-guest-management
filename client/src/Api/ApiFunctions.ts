@@ -49,3 +49,32 @@ export async function getGuest(){
 }
 
 
+export async function updateGuest(id: string, data: any) {
+  try {
+    const record = await pb.collection("guests").update(id, data, {
+      fetchOptions: { signal: null }, 
+    })
+    return record
+  } catch (error) {
+    console.error("Error updating guest:", error)
+    throw error
+  }
+}
+
+
+export async function getGuestById(id: string) {
+  try {
+    const guest = await pb.collection("guests").getOne(id, {
+      fetchOptions: { signal: null }, 
+    })
+    return guest
+  } catch (error) {
+    console.error("Error fetching guest:", error)
+    throw error
+  }
+}
+
+
+
+
+

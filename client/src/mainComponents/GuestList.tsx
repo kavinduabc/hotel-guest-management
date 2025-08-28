@@ -1,6 +1,6 @@
 // ** Guest list component 8/28/2025 */
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react"
 import {
   Table,
   TableBody,
@@ -10,7 +10,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { getGuest } from '@/Api/ApiFunctions'
+import { getGuest } from "@/Api/ApiFunctions"
+import { useNavigate } from "react-router-dom"
 
 interface Guest {
   id: string
@@ -22,9 +23,11 @@ interface Guest {
   date_of_birth: string
 }
 
-const GuestList = () => {
+export default function GuestList() {
   const [guests, setGuests] = useState<Guest[]>([])
   const [loading, setLoading] = useState(true)
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchGuests = async () => {
@@ -66,18 +69,19 @@ const GuestList = () => {
           {guests.map((guest) => (
             <TableRow key={guest.id}>
               <TableCell className="font-medium">{guest.id}</TableCell>
-              <TableCell>{guest.first_name || '-'}</TableCell>
-              <TableCell>{guest.last_name || '-'}</TableCell>
-              <TableCell>{guest.email || '-'}</TableCell>
-              <TableCell>{guest.phone || '-'}</TableCell>
-              <TableCell>{guest.address || '-'}</TableCell>
+              <TableCell>{guest.first_name || "-"}</TableCell>
+              <TableCell>{guest.last_name || "-"}</TableCell>
+              <TableCell>{guest.email || "-"}</TableCell>
+              <TableCell>{guest.phone || "-"}</TableCell>
+              <TableCell>{guest.address || "-"}</TableCell>
               <TableCell>
                 {guest.date_of_birth
                   ? new Date(guest.date_of_birth).toLocaleDateString()
-                  : '-'}
+                  : "-"}
               </TableCell>
               <TableCell>
-                <button className="text-blue-500 hover:underline">Edit</button>
+                <button className="text-blue-500 hover:underline"
+                onClick={()=> navigate("/update-guest")}>Edit</button>
                 <button className="text-red-500 hover:underline ml-2">Delete</button>
               </TableCell>
             </TableRow>
@@ -87,5 +91,3 @@ const GuestList = () => {
     </div>
   )
 }
-
-export default GuestList

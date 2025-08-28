@@ -1,13 +1,14 @@
-/** add guest form 8/28/2025 */
-//** update the guest  */
-
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import React, { useState } from "react"
-import { createGuest } from "@/Api/ApiFunctions"
+import { useState, useEffect } from "react"
+import { updateGuest, getGuestById } from "@/Api/ApiFunctions"
 
-export default function AddGuestForm() {
+interface GuestFormProps {
+  id: string
+}
+
+export default function UpdateGuestForm({ id }: GuestFormProps) {
   const [form, setForm] = useState({
     first_name: "",
     last_name: "",
@@ -15,36 +16,55 @@ export default function AddGuestForm() {
     phone: "",
     address: "",
     date_of_birth: "",
-  });
+  })
+
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchGuest = async () => {
+      try {
+        const guest = await getGuestById(id)
+        setForm({
+          first_name: guest.first_name || "",
+          last_name: guest.last_name || "",
+          email: guest.email || "",
+          phone: guest.phone || "",
+          address: guest.address || "",
+          date_of_birth: guest.date_of_birth
+            ? guest.date_of_birth.split("T")[0]
+            : "",
+        })
+      } catch (err) {
+        console.error("Error loading guest:", err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchGuest()
+  }, [id])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.id]: e.target.value });
-  };
+    setForm({ ...form, [e.target.id]: e.target.value })
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+    e.preventDefault()
     try {
-      await createGuest(form);
-      alert("Guest added successfully!");
-      setForm({
-        first_name: "",
-        last_name: "",
-        email: "",
-        phone: "",
-        address: "",
-        date_of_birth: "",
-      });
+      await updateGuest(id, form)
+      alert(" Guest updated successfully!")
     } catch (err) {
-      alert("Error adding guest. Check console.");
+      console.error(err)
+      alert(" Error updating guest. Check console.")
     }
-  };
+  }
+
+  if (loading) return <p>Loading...</p>
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <div className="w-full max-w-lg bg-white rounded-2xl shadow-md p-8">
         <h3 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
-          Add Guest
+          Update Guest
         </h3>
         <form className="space-y-5" onSubmit={handleSubmit}>
           <div className="grid w-full gap-2">
@@ -54,7 +74,6 @@ export default function AddGuestForm() {
               id="first_name"
               value={form.first_name}
               onChange={handleChange}
-              placeholder="Enter First Name"
               required
             />
           </div>
@@ -66,7 +85,6 @@ export default function AddGuestForm() {
               id="last_name"
               value={form.last_name}
               onChange={handleChange}
-              placeholder="Enter Last Name"
               required
             />
           </div>
@@ -78,7 +96,6 @@ export default function AddGuestForm() {
               id="email"
               value={form.email}
               onChange={handleChange}
-              placeholder="Enter Email"
               required
             />
           </div>
@@ -90,7 +107,6 @@ export default function AddGuestForm() {
               id="phone"
               value={form.phone}
               onChange={handleChange}
-              placeholder="Enter Phone Number"
               required
             />
           </div>
@@ -102,7 +118,6 @@ export default function AddGuestForm() {
               id="address"
               value={form.address}
               onChange={handleChange}
-              placeholder="Enter Address"
               required
             />
           </div>
@@ -119,11 +134,11 @@ export default function AddGuestForm() {
 
           <div className="pt-4">
             <Button type="submit" className="w-full">
-              Add Guest
+              Update Guest
             </Button>
           </div>
         </form>
       </div>
     </div>
-  );
+  )
 }
