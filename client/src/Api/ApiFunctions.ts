@@ -26,11 +26,24 @@ export async function createGuest(data : {
         const record = await pb.collection("guests").create(data);
         console.log("Guest added successfully");
         return record;
-    } catch (err) {
+    } catch (error) {
 
-        console.error("Failed to create guest:",err);
-        throw err;
+        console.error("Failed to create guest:",error);
+        throw error;
         
     }
     
+}
+
+export async function getGuest(){
+
+    try {
+        const record = await pb.collection("guests").getOne('id');
+        console.log("Get all users");
+        return record;
+    } catch (error) {
+        console.error("faild to get all users:",error)
+        throw error;
+        
+    }
 }
