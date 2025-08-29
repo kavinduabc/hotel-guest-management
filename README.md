@@ -1,5 +1,65 @@
 # hotel-guest-management
 
+## Running the Project
+
+### Prerequisites
+
+- **Node.js**: v18.x or higher (recommended)
+- **PocketBase**: Download from [https://pocketbase.io/](https://pocketbase.io/)
+
+---
+
+### 1. Start the Backend (PocketBase)
+
+1. Open a terminal and navigate to the `server` folder:
+
+    ```sh
+    cd server
+    ```
+
+2. Start PocketBase:
+
+    ```sh
+    ./pocketbase.exe serve
+    ```
+
+3. Access the PocketBase admin UI at [http://127.0.0.1:8090/_/](http://127.0.0.1:8090/_/)
+
+    - **Admin Email:** `piumalranepura@gmail.com`
+    - **Admin Password:** `@Kavi123@@`
+
+---
+
+### 2. Start the Frontend (React)
+
+1. Open a new terminal and navigate to the `client` folder:
+
+    ```sh
+    cd client
+    ```
+
+2. Install dependencies:
+
+    ```sh
+    npm install
+    ```
+
+3. Start the development server:
+
+    ```sh
+    npm run dev
+    ```
+
+4. Open [http://localhost:5173](http://localhost:5173) in your browser to view the app.
+
+---
+
+### Notes
+
+- Make sure both the backend and frontend servers are running for full functionality.
+- The frontend expects PocketBase to be running at `http://127.0.0.1:8090`.
+- If you change the admin credentials, update them in [`client/src/Api/ApiFunctions.ts`](client/src/Api/ApiFunctions.ts) where `admins.authWithPassword("piumalranepura@gmail.com", "@Kavi123@@")` is used.
+
 ## API Functions Documentation
 
 This section describes the functions implemented in [`ApiFunctions.ts`](client/src/Api/ApiFunctions.ts) for interacting with the PocketBase backend.
@@ -77,3 +137,8 @@ Deletes a guest record by its ID.
 All functions use the PocketBase JavaScript SDK and require the backend server to be running and accessible. Error handling is implemented for each function, and errors are logged to the console.
 
 For more details, see the implementation in [client/src/Api/ApiFunctions.ts](client/src/Api/ApiFunctions.ts).
+
+
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/7dd34c69-7f18-4661-84e6-9a418343669c" />
+
+
