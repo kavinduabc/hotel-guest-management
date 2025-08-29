@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { FaUsers, FaUserPlus, FaHotel, FaBars, FaTimes } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,12 +20,16 @@ const Navigation = () => {
 
         
         <div className="hidden md:flex gap-8">
+            <Link to="/add-guest">
           <div className="flex items-center gap-2 cursor-pointer hover:text-[#D4AF37]">
             <FaUserPlus /> <span>Add Guest</span>
-          </div>
+          </div></Link>
+          
+          <Link to="/guest-list">
           <div className="flex items-center gap-2 cursor-pointer hover:text-[#D4AF37]">
             <FaUsers /> <span>Guest List</span>
           </div>
+          </Link>
         </div>
 
         
@@ -38,12 +43,17 @@ const Navigation = () => {
       
       {isOpen && (
         <div className="md:hidden mt-4 flex flex-col gap-4 bg-[#0C3B5D] p-4 rounded-lg shadow-lg">
+        <Link to="/add-guest">
           <div className="flex items-center gap-2 cursor-pointer hover:text-[#D4AF37]">
             <FaUserPlus /> <span>Add Guest</span>
           </div>
+        </Link>  
+
+         <Link to="/guest-list">
           <div className="flex items-center gap-2 cursor-pointer hover:text-[#D4AF37]">
             <FaUsers /> <span>Guest List</span>
           </div>
+        </Link>  
         </div>
       )}
     </nav>
