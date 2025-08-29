@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button"
 import { useState, useEffect } from "react"
 import { updateGuest, getGuestById } from "@/Api/ApiFunctions"
 import { useParams, useNavigate } from "react-router-dom"
+import { AlertDemo } from "@/Alert/AlertDemo"
 
-// implement the validations for form
+//  validation function 
 const validateGuestForm = (form: any) => {
   const errors: any = {}
 
@@ -54,6 +55,14 @@ export default function UpdateGuestForm() {
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
 
+  //  state for showing alerts
+
+  const [alert, setAlert] = useState<{
+    title: string
+    description?: string
+    type: "success" | "error" | "info"
+  } | null>(null)
+
   useEffect(() => {
     if (!id) return
 
@@ -72,6 +81,11 @@ export default function UpdateGuestForm() {
         })
       } catch (err) {
         console.error("Error loading guest:", err)
+        setAlert({
+          title: "Failed to load guest",
+          description: "Please try again later.",
+          type: "error",
+        })
       } finally {
         setLoading(false)
       }
@@ -84,8 +98,6 @@ export default function UpdateGuestForm() {
     setForm({ ...form, [e.target.id]: e.target.value })
   }
 
-
-  // impliment the function for user form submite
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!id) return
@@ -98,11 +110,22 @@ export default function UpdateGuestForm() {
     setSubmitting(true)
     try {
       await updateGuest(id, form)
-      alert("Guest updated successfully!")
-      navigate("/guest-list")
+      setAlert({
+        title: "Guest updated successfully!",
+        description: "The guest details were saved.",
+        type: "success",
+      })
+
+      //  Navigate after short delay
+
+      setTimeout(() => navigate("/guest-list"), 1500)
     } catch (err) {
       console.error(err)
-      alert("Error updating guest. Check console.")
+      setAlert({
+        title: "Error updating guest",
+        description: "Something went wrong. Check console.",
+        type: "error",
+      })
     } finally {
       setSubmitting(false)
     }
@@ -121,9 +144,20 @@ export default function UpdateGuestForm() {
           </p>
         </div>
 
+        // show alert if exists 
+        {alert && (
+          <div className="mb-6">
+            <AlertDemo
+              alertTitle={alert.title}
+              alertDescription={alert.description}
+              type={alert.type}
+              onClose={() => setAlert(null)}
+            />
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
           
-         
           <div className="flex flex-col gap-2">
             <Label htmlFor="first_name">First Name</Label>
             <Input
@@ -137,7 +171,6 @@ export default function UpdateGuestForm() {
             )}
           </div>
 
-          
           <div className="flex flex-col gap-2">
             <Label htmlFor="last_name">Last Name</Label>
             <Input
@@ -151,7 +184,6 @@ export default function UpdateGuestForm() {
             )}
           </div>
 
-          
           <div className="flex flex-col gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -165,7 +197,6 @@ export default function UpdateGuestForm() {
             )}
           </div>
 
-          
           <div className="flex flex-col gap-2">
             <Label htmlFor="phone">Phone</Label>
             <Input
@@ -179,7 +210,6 @@ export default function UpdateGuestForm() {
             )}
           </div>
 
-          
           <div className="flex flex-col gap-2 md:col-span-2">
             <Label htmlFor="address">Address</Label>
             <Input
@@ -193,7 +223,6 @@ export default function UpdateGuestForm() {
             )}
           </div>
 
-          
           <div className="flex flex-col gap-2">
             <Label htmlFor="date_of_birth">Birth Day</Label>
             <Input
