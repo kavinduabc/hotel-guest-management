@@ -31,7 +31,7 @@ export default function GuestList() {
     const fetchGuests = async () => {
       try {
         const data = await getGuest()
-        setGuests(data as Guest[])
+        setGuests(data as unknown as Guest[])
       } catch (error) {
         console.error("Error fetching guests:", error)
       } finally {

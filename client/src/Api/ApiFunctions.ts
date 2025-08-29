@@ -2,6 +2,7 @@
   //** create the api function with email validation  */
 import pb from "@/lib/pocketbase";
 
+
 await pb.admins.authWithPassword("piumalranepura@gmail.com", "@Kavi123@@");
 
 export async function createGuest(data : {
@@ -49,11 +50,20 @@ export async function getGuest(){
 }
 
 
+export async function getGuestById(id: string) {
+  try {
+    const record = await pb.collection("guests").getOne(id) // no signal here
+    return record
+  } catch (error) {
+    console.error("Error fetching guest:", error)
+    throw error
+  }
+}
+
+
 export async function updateGuest(id: string, data: any) {
   try {
-    const record = await pb.collection("guests").update(id, data, {
-      fetchOptions: { signal: null }, 
-    })
+    const record = await pb.collection("guests").update(id, data) // clean
     return record
   } catch (error) {
     console.error("Error updating guest:", error)
@@ -61,18 +71,6 @@ export async function updateGuest(id: string, data: any) {
   }
 }
 
-
-export async function getGuestById(id: string) {
-  try {
-    const guest = await pb.collection("guests").getOne(id, {
-      fetchOptions: { signal: null }, 
-    })
-    return guest
-  } catch (error) {
-    console.error("Error fetching guest:", error)
-    throw error;
-  }
-}
 
 
 
