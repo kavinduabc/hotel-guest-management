@@ -88,7 +88,7 @@ export default function GuestList() {
                     : "-"}
                 </TableCell>
 
-                {/* Single Action Cell */}
+              
                 <TableCell className="flex gap-2">
                   {/* Desktop Buttons */}
                   <Button
@@ -100,16 +100,16 @@ export default function GuestList() {
                   </Button>
                   <Button
                     variant="outline"
-                    className="hidden md:inline-flex text-red-500 hover:underline"
+                     className="hidden md:inline-flex text-red-500 hover:underline"
                     onClick={() => GuestDelete(guest.id)}
                   >
                     Delete
                   </Button>
 
-                  {/* Mobile Buttons */}
+                  
                   <Button
                     variant="outline"
-                    className="inline-flex md:hidden text-blue-500 hover:underline"
+                     className="inline-flex md:hidden text-blue-500 hover:underline"
                     onClick={() => navigate(`/update-guest/${guest.id}`)}
                   >
                     Edit

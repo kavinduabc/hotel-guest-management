@@ -1,6 +1,3 @@
-/** add guest form 8/28/2025 */
-//** update the guest  */
-
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
@@ -15,18 +12,20 @@ export default function AddGuestForm() {
     phone: "",
     address: "",
     date_of_birth: "",
-  });
+  })
+
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.id]: e.target.value });
-  };
+    setForm({ ...form, [e.target.id]: e.target.value })
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+    e.preventDefault()
+    setLoading(true)
     try {
-      await createGuest(form);
-      alert("Guest added successfully!");
+      await createGuest(form)
+      alert("Guest added successfully!")
       setForm({
         first_name: "",
         last_name: "",
@@ -34,80 +33,95 @@ export default function AddGuestForm() {
         phone: "",
         address: "",
         date_of_birth: "",
-      });
+      })
     } catch (err) {
-      alert("Error adding guest. Check console.");
+      console.error(err)
+      alert(" Error adding guest. Check console.")
+    } finally {
+      setLoading(false)
     }
-  };
+  }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <div className="w-full max-w-lg bg-white rounded-2xl shadow-md p-8">
-        <h3 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
-          Add Guest
-        </h3>
-        <form className="space-y-5" onSubmit={handleSubmit}>
-          <div className="grid w-full gap-2">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 px-4">
+      <div className="w-full max-w-3xl bg-white rounded-2xl shadow-xl border border-gray-200 p-10">
+        
+        <div className="text-center mb-10">
+          <h2 className="text-3xl font-extrabold text-gray-900">Add New Guest</h2>
+          <p className="text-gray-500 mt-2">
+            Please provide the guest information below.
+          </p>
+        </div>
+
+        
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+         
+          <div className="flex flex-col gap-2">
             <Label htmlFor="first_name">First Name</Label>
             <Input
               type="text"
               id="first_name"
               value={form.first_name}
               onChange={handleChange}
-              placeholder="Enter First Name"
+              placeholder="first name"
               required
             />
           </div>
 
-          <div className="grid w-full gap-2">
+         
+          <div className="flex flex-col gap-2">
             <Label htmlFor="last_name">Last Name</Label>
             <Input
               type="text"
               id="last_name"
               value={form.last_name}
               onChange={handleChange}
-              placeholder="Enter Last Name"
+              placeholder="last name"
               required
             />
           </div>
 
-          <div className="grid w-full gap-2">
+          
+          <div className="flex flex-col gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
               type="email"
               id="email"
               value={form.email}
               onChange={handleChange}
-              placeholder="Enter Email"
+              placeholder="Abc@gmail.com"
               required
             />
           </div>
 
-          <div className="grid w-full gap-2">
+          
+          <div className="flex flex-col gap-2">
             <Label htmlFor="phone">Phone</Label>
             <Input
               type="text"
               id="phone"
               value={form.phone}
               onChange={handleChange}
-              placeholder="Enter Phone Number"
+              placeholder="+94 71 234 5678"
               required
             />
           </div>
 
-          <div className="grid w-full gap-2">
+          
+          <div className="flex flex-col gap-2 md:col-span-2">
             <Label htmlFor="address">Address</Label>
             <Input
               type="text"
               id="address"
               value={form.address}
               onChange={handleChange}
-              placeholder="Enter Address"
+              placeholder="123 Main Street, Colombo"
               required
             />
           </div>
 
-          <div className="grid w-full gap-2">
+         
+          <div className="flex flex-col gap-2">
             <Label htmlFor="date_of_birth">Birth Day</Label>
             <Input
               type="date"
@@ -117,13 +131,18 @@ export default function AddGuestForm() {
             />
           </div>
 
-          <div className="pt-4">
-            <Button type="submit" className="w-full">
-              Add Guest
+          
+          <div className="md:col-span-2 pt-4">
+            <Button
+              type="submit"
+              className="w-[200px] py-3 text-lg font-semibold rounded-xl shadow-md hover:shadow-lg transition-all"
+              disabled={loading}
+            >
+              {loading ? "Adding Guest..." : "Add Guest"}
             </Button>
           </div>
         </form>
       </div>
     </div>
-  );
+  )
 }
