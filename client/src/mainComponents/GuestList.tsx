@@ -58,7 +58,6 @@ export default function GuestList() {
 
   return (
     <div className="p-4">
-      {/* Table wrapper with horizontal scroll on mobile */}
       <div className="overflow-x-auto">
         <Table className="min-w-[600px]">
           <TableCaption>List of all guests.</TableCaption>
