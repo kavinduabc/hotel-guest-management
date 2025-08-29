@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/table"
 import { getGuest } from "@/Api/ApiFunctions"
 import { useNavigate } from "react-router-dom"
+import { Button } from "@/components/ui/button"
 
 interface Guest {
   id: string
@@ -60,8 +61,7 @@ export default function GuestList() {
               <TableHead>Phone Number</TableHead>
               <TableHead className="hidden md:table-cell">Address</TableHead>
               <TableHead className="hidden md:table-cell">Birth Date</TableHead>
-              <TableHead className="hidden md:table-cell">Action</TableHead>
-              <TableHead className="md:hidden">Actions</TableHead>
+              <TableHead>Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -78,25 +78,40 @@ export default function GuestList() {
                     ? new Date(guest.date_of_birth).toLocaleDateString()
                     : "-"}
                 </TableCell>
-                <TableCell className="hidden md:table-cell flex gap-2">
-                  <button
-                    className="text-blue-500 hover:underline"
-                    onClick={() => navigate(`/update-guest/${guest.id}`)}
-                  >
-                    Edit
-                  </button>
-                  <button className="text-red-500 hover:underline">Delete</button>
-                </TableCell>
 
-                
-                <TableCell className="md:hidden flex gap-2">
-                  <button
-                    className="text-blue-500 hover:underline"
+                {/* Single Action Cell */}
+                <TableCell className="flex gap-2">
+                  {/* Desktop Buttons */}
+                  <Button
+                    variant="outline"
+                    className="hidden md:inline-flex text-blue-500 hover:underline"
                     onClick={() => navigate(`/update-guest/${guest.id}`)}
                   >
                     Edit
-                  </button>
-                  <button className="text-red-500 hover:underline">Delete</button>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="hidden md:inline-flex text-red-500 hover:underline"
+                    onClick={() => console.log("Delete", guest.id)}
+                  >
+                    Delete
+                  </Button>
+
+                  {/* Mobile Buttons */}
+                  <Button
+                    variant="outline"
+                    className="inline-flex md:hidden text-blue-500 hover:underline"
+                    onClick={() => navigate(`/update-guest/${guest.id}`)}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="inline-flex md:hidden text-red-500 hover:underline"
+                    onClick={() => console.log("Delete", guest.id)}
+                  >
+                    Delete
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
