@@ -4,10 +4,12 @@ import './App.css';
 import GuestList from "./mainComponents/GuestList";
 import AddGuestForm from "./mainComponents/AddGusetForm";
 import UpdateGuestForm from "./mainComponents/GuestUpdate";
+import Navigation from "./mainComponents/Navigation";
 
 function App() {
   return (
     <BrowserRouter>
+      <Navigation/>
       <Routes>
         <Route path="/add-guest" element={<AddGuestForm/>}/>
         <Route path="/guest-list" element={<GuestList/>} />
