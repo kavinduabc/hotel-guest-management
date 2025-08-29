@@ -57,76 +57,67 @@ export default function GuestList() {
   }
 
   return (
-    <div className="p-4">
-      <div className="overflow-x-auto">
-        <Table className="min-w-[600px]">
-          <TableCaption>List of all guests.</TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="hidden md:table-cell w-[100px]">Id</TableHead>
-              <TableHead>First Name</TableHead>
-              <TableHead>Last Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Phone Number</TableHead>
-              <TableHead className="hidden md:table-cell">Address</TableHead>
-              <TableHead className="hidden md:table-cell">Birth Date</TableHead>
-              <TableHead>Action</TableHead>
+    <div className="p-6">
+  <div className="bg-white rounded-2xl shadow-md p-4">
+    <h2 className="text-xl font-semibold mb-4 text-gray-800">Guest List</h2>
+
+    <div className="overflow-x-auto">
+      <Table className="min-w-[600px] border rounded-lg">
+        <TableCaption className="text-gray-500 text-sm">
+          Manage and view all registered guests.
+        </TableCaption>
+        <TableHeader>
+          <TableRow className="bg-gray-100">
+            <TableHead className="font-semibold text-gray-700">First Name</TableHead>
+            <TableHead className="font-semibold text-gray-700">Last Name</TableHead>
+            <TableHead className="font-semibold text-gray-700">Email</TableHead>
+            <TableHead className="font-semibold text-gray-700">Phone Number</TableHead>
+            <TableHead className="hidden md:table-cell font-semibold text-gray-700">Address</TableHead>
+            <TableHead className="hidden md:table-cell font-semibold text-gray-700">BirthDate</TableHead>
+            <TableHead className="font-semibold text-gray-700 text-center">Action</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {guests.map((guest, index) => (
+            <TableRow
+              key={guest.id}
+              className={index % 2 === 0 ? "bg-white hover:bg-gray-50" : "bg-gray-50 hover:bg-gray-100"}
+            >
+              <TableCell className="font-medium text-gray-800">{guest.first_name || "-"}</TableCell>
+              <TableCell>{guest.last_name || "-"}</TableCell>
+              <TableCell className="text-gray-600">{guest.email || "-"}</TableCell>
+              <TableCell>{guest.phone || "-"}</TableCell>
+              <TableCell className="hidden md:table-cell">{guest.address || "-"}</TableCell>
+              <TableCell className="hidden md:table-cell">
+                {guest.date_of_birth
+                  ? new Date(guest.date_of_birth).toLocaleDateString()
+                  : "-"}
+              </TableCell>
+
+              {/* Action Buttons */}
+              <TableCell className="flex justify-center gap-2">
+                <Button
+                  variant="default"
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg"
+                  onClick={() => navigate(`/update-guest/${guest.id}`)}
+                >
+                  Edit
+                </Button>
+                <Button
+                  variant="destructive"
+                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg"
+                  onClick={() => GuestDelete(guest.id)}
+                >
+                  Delete
+                </Button>
+              </TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {guests.map((guest) => (
-              <TableRow key={guest.id}>
-                <TableCell className="hidden md:table-cell font-medium">{guest.id}</TableCell>
-                <TableCell>{guest.first_name || "-"}</TableCell>
-                <TableCell>{guest.last_name || "-"}</TableCell>
-                <TableCell>{guest.email || "-"}</TableCell>
-                <TableCell>{guest.phone || "-"}</TableCell>
-                <TableCell className="hidden md:table-cell">{guest.address || "-"}</TableCell>
-                <TableCell className="hidden md:table-cell">
-                  {guest.date_of_birth
-                    ? new Date(guest.date_of_birth).toLocaleDateString()
-                    : "-"}
-                </TableCell>
-
-              
-                <TableCell className="flex gap-2">
-                  {/* Desktop Buttons */}
-                  <Button
-                    variant="outline"
-                    className="hidden md:inline-flex text-blue-500 hover:underline"
-                    onClick={() => navigate(`/update-guest/${guest.id}`)}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="outline"
-                     className="hidden md:inline-flex text-red-500 hover:underline"
-                    onClick={() => GuestDelete(guest.id)}
-                  >
-                    Delete
-                  </Button>
-
-                  
-                  <Button
-                    variant="outline"
-                     className="inline-flex md:hidden text-blue-500 hover:underline"
-                    onClick={() => navigate(`/update-guest/${guest.id}`)}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="inline-flex md:hidden text-red-500 hover:underline"
-                    onClick={() => GuestDelete(guest.id)}
-                  >
-                    Delete
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+          ))}
+        </TableBody>
+      </Table>
     </div>
+  </div>
+</div>
+
   )
 }
