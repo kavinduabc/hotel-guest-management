@@ -1,6 +1,6 @@
 //** create navbar 8/29/2025  */
 
-import React, { useState } from "react";
+import  { useState } from "react";
 import { FaUsers, FaUserPlus, FaHotel, FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-router-dom";
 

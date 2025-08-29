@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { getGuest } from "@/Api/ApiFunctions"
+import { DeleteGuestById, getGuest } from "@/Api/ApiFunctions"
 import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 
@@ -44,6 +44,16 @@ export default function GuestList() {
 
   if (loading) {
     return <p className="text-center mt-4">Loading guests...</p>
+  }
+
+  // Delete guest function
+  const GuestDelete = async (id: string) => {
+    try {
+      await DeleteGuestById(id)
+      setGuests((prevGuests) => prevGuests.filter((guest) => guest.id !== id))
+    } catch (error) {
+      console.error("Error deleting guest:", error)
+    }
   }
 
   return (
@@ -92,7 +102,7 @@ export default function GuestList() {
                   <Button
                     variant="outline"
                     className="hidden md:inline-flex text-red-500 hover:underline"
-                    onClick={() => console.log("Delete", guest.id)}
+                    onClick={() => GuestDelete(guest.id)}
                   >
                     Delete
                   </Button>
@@ -108,7 +118,7 @@ export default function GuestList() {
                   <Button
                     variant="outline"
                     className="inline-flex md:hidden text-red-500 hover:underline"
-                    onClick={() => console.log("Delete", guest.id)}
+                    onClick={() => GuestDelete(guest.id)}
                   >
                     Delete
                   </Button>
