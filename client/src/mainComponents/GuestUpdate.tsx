@@ -3,12 +3,12 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { useState, useEffect } from "react"
 import { updateGuest, getGuestById } from "@/Api/ApiFunctions"
+import { useParams, useNavigate } from "react-router-dom"
 
-interface GuestFormProps {
-  id: string
-}
+export default function UpdateGuestForm() {
+  const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
 
-export default function UpdateGuestForm({ id }: GuestFormProps) {
   const [form, setForm] = useState({
     first_name: "",
     last_name: "",
@@ -20,7 +20,10 @@ export default function UpdateGuestForm({ id }: GuestFormProps) {
 
   const [loading, setLoading] = useState(true)
 
+  
   useEffect(() => {
+    if (!id) return
+
     const fetchGuest = async () => {
       try {
         const guest = await getGuestById(id)
@@ -40,6 +43,7 @@ export default function UpdateGuestForm({ id }: GuestFormProps) {
         setLoading(false)
       }
     }
+
     fetchGuest()
   }, [id])
 
@@ -50,11 +54,12 @@ export default function UpdateGuestForm({ id }: GuestFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      await updateGuest(id, form)
-      alert(" Guest updated successfully!")
+      await updateGuest(id!, form) 
+      alert("Guest updated successfully!")
+      navigate("/guest-list") 
     } catch (err) {
       console.error(err)
-      alert(" Error updating guest. Check console.")
+      alert("Error updating guest. Check console.")
     }
   }
 
