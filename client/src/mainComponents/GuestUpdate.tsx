@@ -5,6 +5,38 @@ import { useState, useEffect } from "react"
 import { updateGuest, getGuestById } from "@/Api/ApiFunctions"
 import { useParams, useNavigate } from "react-router-dom"
 
+// ✅ Shared Validation Function
+const validateGuestForm = (form: any) => {
+  const errors: any = {}
+
+  if (!form.first_name.trim()) {
+    errors.first_name = "First name is required"
+  }
+  if (!form.last_name.trim()) {
+    errors.last_name = "Last name is required"
+  }
+
+  if (!form.email.trim()) {
+    errors.email = "Email is required"
+  } else if (!/\S+@\S+\.\S+/.test(form.email)) {
+    errors.email = "Invalid email format"
+  }
+
+  if (!form.phone.trim()) {
+    errors.phone = "Phone number is required"
+  } else if (!/^[0-9]{10}$/.test(form.phone)) {
+    errors.phone = "Phone number must be exactly 10 digits"
+  } else if (!form.phone.startsWith("0")) {
+    errors.phone = "Phone number must start with 0"
+  }
+
+  if (!form.address.trim()) {
+    errors.address = "Address is required"
+  }
+
+  return errors
+}
+
 export default function UpdateGuestForm() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
@@ -18,6 +50,7 @@ export default function UpdateGuestForm() {
     date_of_birth: "",
   })
 
+  const [errors, setErrors] = useState<any>({})
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
 
@@ -54,6 +87,12 @@ export default function UpdateGuestForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!id) return
+
+    const validationErrors = validateGuestForm(form)
+    setErrors(validationErrors)
+
+    if (Object.keys(validationErrors).length > 0) return
+
     setSubmitting(true)
     try {
       await updateGuest(id, form)
@@ -82,6 +121,7 @@ export default function UpdateGuestForm() {
 
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
           
+          {/* First Name */}
           <div className="flex flex-col gap-2">
             <Label htmlFor="first_name">First Name</Label>
             <Input
@@ -89,10 +129,13 @@ export default function UpdateGuestForm() {
               id="first_name"
               value={form.first_name}
               onChange={handleChange}
-              required
             />
+            {errors.first_name && (
+              <p className="text-red-500 text-sm">{errors.first_name}</p>
+            )}
           </div>
 
+          {/* Last Name */}
           <div className="flex flex-col gap-2">
             <Label htmlFor="last_name">Last Name</Label>
             <Input
@@ -100,10 +143,13 @@ export default function UpdateGuestForm() {
               id="last_name"
               value={form.last_name}
               onChange={handleChange}
-              required
             />
+            {errors.last_name && (
+              <p className="text-red-500 text-sm">{errors.last_name}</p>
+            )}
           </div>
 
+          {/* Email */}
           <div className="flex flex-col gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -111,10 +157,13 @@ export default function UpdateGuestForm() {
               id="email"
               value={form.email}
               onChange={handleChange}
-              required
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm">{errors.email}</p>
+            )}
           </div>
 
+          {/* Phone */}
           <div className="flex flex-col gap-2">
             <Label htmlFor="phone">Phone</Label>
             <Input
@@ -122,10 +171,13 @@ export default function UpdateGuestForm() {
               id="phone"
               value={form.phone}
               onChange={handleChange}
-              required
             />
+            {errors.phone && (
+              <p className="text-red-500 text-sm">{errors.phone}</p>
+            )}
           </div>
 
+          {/* Address */}
           <div className="flex flex-col gap-2 md:col-span-2">
             <Label htmlFor="address">Address</Label>
             <Input
@@ -133,10 +185,13 @@ export default function UpdateGuestForm() {
               id="address"
               value={form.address}
               onChange={handleChange}
-              required
             />
+            {errors.address && (
+              <p className="text-red-500 text-sm">{errors.address}</p>
+            )}
           </div>
 
+          {/* DOB */}
           <div className="flex flex-col gap-2">
             <Label htmlFor="date_of_birth">Birth Day</Label>
             <Input
