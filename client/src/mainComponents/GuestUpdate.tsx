@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 import { updateGuest, getGuestById } from "@/Api/ApiFunctions"
 import { useParams, useNavigate } from "react-router-dom"
 
-// ✅ Shared Validation Function
+// implement the validations for form
 const validateGuestForm = (form: any) => {
   const errors: any = {}
 
@@ -84,6 +84,8 @@ export default function UpdateGuestForm() {
     setForm({ ...form, [e.target.id]: e.target.value })
   }
 
+
+  // impliment the function for user form submite
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!id) return
@@ -121,7 +123,7 @@ export default function UpdateGuestForm() {
 
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
           
-          {/* First Name */}
+         
           <div className="flex flex-col gap-2">
             <Label htmlFor="first_name">First Name</Label>
             <Input
@@ -135,7 +137,7 @@ export default function UpdateGuestForm() {
             )}
           </div>
 
-          {/* Last Name */}
+          
           <div className="flex flex-col gap-2">
             <Label htmlFor="last_name">Last Name</Label>
             <Input
@@ -149,7 +151,7 @@ export default function UpdateGuestForm() {
             )}
           </div>
 
-          {/* Email */}
+          
           <div className="flex flex-col gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -163,7 +165,7 @@ export default function UpdateGuestForm() {
             )}
           </div>
 
-          {/* Phone */}
+          
           <div className="flex flex-col gap-2">
             <Label htmlFor="phone">Phone</Label>
             <Input
@@ -177,7 +179,7 @@ export default function UpdateGuestForm() {
             )}
           </div>
 
-          {/* Address */}
+          
           <div className="flex flex-col gap-2 md:col-span-2">
             <Label htmlFor="address">Address</Label>
             <Input
@@ -191,7 +193,7 @@ export default function UpdateGuestForm() {
             )}
           </div>
 
-          {/* DOB */}
+          
           <div className="flex flex-col gap-2">
             <Label htmlFor="date_of_birth">Birth Day</Label>
             <Input

@@ -22,6 +22,7 @@ export default function AddGuestForm() {
     setErrors({ ...errors, [e.target.id]: "" }) 
   }
 
+  // implement the validations for form
   const validateForm = () => {
     let newErrors: Record<string, string> = {}
 
