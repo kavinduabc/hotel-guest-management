@@ -1,8 +1,9 @@
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { createGuest } from "@/Api/ApiFunctions"
+import { AlertDemo } from "@/Alert/AlertDemo"
 
 export default function AddGuestForm() {
   const [form, setForm] = useState({
@@ -17,14 +18,28 @@ export default function AddGuestForm() {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(false)
 
+  // NEW: alert state
+  const [alert, setAlert] = useState<{
+    type: "success" | "error" | "info"
+    title: string
+    description?: string
+  } | null>(null)
+
+  // optional: auto-dismiss after 3s
+  useEffect(() => {
+    if (!alert) return
+    const t = setTimeout(() => setAlert(null), 3000)
+    return () => clearTimeout(t)
+  }, [alert])
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.id]: e.target.value })
-    setErrors({ ...errors, [e.target.id]: "" }) 
+    setErrors({ ...errors, [e.target.id]: "" })
   }
 
-  // implement the validations for form
+  // validations
   const validateForm = () => {
-    let newErrors: Record<string, string> = {}
+    const newErrors: Record<string, string> = {}
 
     if (!form.first_name.trim()) newErrors.first_name = "First name is required"
     if (!form.last_name.trim()) newErrors.last_name = "Last name is required"
@@ -56,8 +71,8 @@ export default function AddGuestForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const newErrors = validateForm()
 
+    const newErrors = validateForm()
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
       return
@@ -66,7 +81,15 @@ export default function AddGuestForm() {
     setLoading(true)
     try {
       await createGuest(form)
-      alert("Guest added successfully!")
+
+      // SHOW SUCCESS ALERT (this actually renders)
+      setAlert({
+        type: "success",
+        title: "Guest added successfully!",
+        description: "The guest details have been saved.",
+      })
+
+      // reset form
       setForm({
         first_name: "",
         last_name: "",
@@ -78,7 +101,11 @@ export default function AddGuestForm() {
       setErrors({})
     } catch (err) {
       console.error(err)
-      alert(" Error adding guest. Check console.")
+      setAlert({
+        type: "error",
+        title: "Error adding guest",
+        description: "Please check the console for details.",
+      })
     } finally {
       setLoading(false)
     }
@@ -87,7 +114,18 @@ export default function AddGuestForm() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 px-4">
       <div className="w-full max-w-3xl bg-white rounded-2xl shadow-xl border border-gray-200 p-10">
-        
+        {/* Alert (renders above the form) */}
+        {alert && (
+          <div className="mb-6">
+            <AlertDemo
+              type={alert.type}
+              alertTitle={alert.title}
+              alertDescription={alert.description}
+              onClose={() => setAlert(null)}
+            />
+          </div>
+        )}
+
         <div className="text-center mb-10">
           <h2 className="text-3xl font-extrabold text-gray-900">Add New Guest</h2>
           <p className="text-gray-500 mt-2">
@@ -96,7 +134,6 @@ export default function AddGuestForm() {
         </div>
 
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          
           <div className="flex flex-col gap-2">
             <Label htmlFor="first_name">First Name</Label>
             <Input
@@ -106,9 +143,7 @@ export default function AddGuestForm() {
               onChange={handleChange}
               placeholder="First name"
             />
-            {errors.first_name && (
-              <p className="text-sm text-red-500">{errors.first_name}</p>
-            )}
+            {errors.first_name && <p className="text-sm text-red-500">{errors.first_name}</p>}
           </div>
 
           <div className="flex flex-col gap-2">
@@ -120,9 +155,7 @@ export default function AddGuestForm() {
               onChange={handleChange}
               placeholder="Last name"
             />
-            {errors.last_name && (
-              <p className="text-sm text-red-500">{errors.last_name}</p>
-            )}
+            {errors.last_name && <p className="text-sm text-red-500">{errors.last_name}</p>}
           </div>
 
           <div className="flex flex-col gap-2">
@@ -134,9 +167,7 @@ export default function AddGuestForm() {
               onChange={handleChange}
               placeholder="abc@gmail.com"
             />
-            {errors.email && (
-              <p className="text-sm text-red-500">{errors.email}</p>
-            )}
+            {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
           </div>
 
           <div className="flex flex-col gap-2">
@@ -148,9 +179,7 @@ export default function AddGuestForm() {
               onChange={handleChange}
               placeholder="0712345678"
             />
-            {errors.phone && (
-              <p className="text-sm text-red-500">{errors.phone}</p>
-            )}
+            {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
           </div>
 
           <div className="flex flex-col gap-2 md:col-span-2">
@@ -162,9 +191,7 @@ export default function AddGuestForm() {
               onChange={handleChange}
               placeholder="123 Main Street, Colombo"
             />
-            {errors.address && (
-              <p className="text-sm text-red-500">{errors.address}</p>
-            )}
+            {errors.address && <p className="text-sm text-red-500">{errors.address}</p>}
           </div>
 
           <div className="flex flex-col gap-2">
