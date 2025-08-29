@@ -12,7 +12,7 @@ function App() {
       <Navigation/>
       <Routes>
         <Route path="/add-guest" element={<AddGuestForm/>}/>
-        <Route path="/guest-list" element={<GuestList/>} />
+        <Route path="/" element={<GuestList/>} />
          <Route path="/update-guest/:id" element={<UpdateGuestForm/>} /> 
       </Routes>
     </BrowserRouter>
