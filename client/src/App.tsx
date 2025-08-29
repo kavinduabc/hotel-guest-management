@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import './App.css';
-import GuestList from "./MainComponents/GuestList";
-import AddGuestForm from "./MainComponents/AddGusetForm";
-import UpdateGuestForm from "./MainComponents/GuestUpdate";
-import Navigation from "./MainComponents/Navigation";
+import GuestList from "./mainComponents/GuestList";
+import AddGuestForm from "./mainComponents/AddGusetForm";
+import UpdateGuestForm from "./mainComponents/GuestUpdate";
+import Navigation from "./mainComponents/Navigation";
 
 function App() {
   return (

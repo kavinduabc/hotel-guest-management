@@ -5,6 +5,8 @@ import pb from "@/lib/pocketbase";
 
 await pb.admins.authWithPassword("piumalranepura@gmail.com", "@Kavi123@@");
 
+// implement function for add guest
+
 export async function createGuest(data : {
     first_name : string ;
     last_name : string;
@@ -36,6 +38,7 @@ export async function createGuest(data : {
     
 }
 
+//implement function for get all guests
 export async function getGuest(){
 
     try {
