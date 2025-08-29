@@ -70,11 +70,19 @@ export async function getGuestById(id: string) {
     return guest
   } catch (error) {
     console.error("Error fetching guest:", error)
-    throw error
+    throw error;
   }
 }
 
 
 
-
-
+export async function DeleteGuestById(id: string) {
+  try {
+    
+    const guest = await pb.collection("guests").delete(id)
+    return guest 
+  } catch (error) {
+    console.error("Error deleting guest:", error)
+    throw error
+  }
+}
