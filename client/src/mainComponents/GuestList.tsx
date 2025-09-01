@@ -12,6 +12,7 @@ import { DeleteGuestById, getGuest } from "@/Api/ApiFunctions"
 import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 
+// Guest interface for representing guest data
 interface Guest {
   id: string
   first_name: string
@@ -23,10 +24,20 @@ interface Guest {
 }
 
 export default function GuestList() {
+  // State for managing guest data
   const [guests, setGuests] = useState<Guest[]>([])
-  const [loading, setLoading] = useState(true)
-  const navigate = useNavigate()
 
+  // State for managing loading state
+  const [loading, setLoading] = useState(true)
+
+  // State for managing error messages
+  const [error, setError] = useState<string | null>(null)
+  
+  // use navigate for programmatic navigation
+  const navigate = useNavigate()
+ 
+
+  // Fetch guests on component mount (fetch guest all data)
   useEffect(() => {
     const fetchGuests = async () => {
       try {
