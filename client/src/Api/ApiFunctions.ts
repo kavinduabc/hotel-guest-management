@@ -52,10 +52,10 @@ export async function getGuest(){
     }
 }
 
-
+//implement function for  Get a guest by ID
 export async function getGuestById(id: string) {
   try {
-    const record = await pb.collection("guests").getOne(id) // no signal here
+    const record = await pb.collection("guests").getOne(id) 
     return record
   } catch (error) {
     console.error("Error fetching guest:", error)
@@ -63,7 +63,7 @@ export async function getGuestById(id: string) {
   }
 }
 
-
+//implement function for  Update a guest
 export async function updateGuest(id: string, data: any) {
   try {
     const record = await pb.collection("guests").update(id, data) // clean

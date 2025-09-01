@@ -25,9 +25,12 @@ const validateGuestForm = (form: any) => {
 }
 
 export default function UpdateGuestForm() {
+  // Get the guest ID from the URL parameters
   const { id } = useParams<{ id: string }>()
+  // useNavigate for programmatic navigation
   const navigate = useNavigate()
 
+  // State for managing form data
   const [form, setForm] = useState({
     first_name: "",
     last_name: "",
@@ -37,16 +40,23 @@ export default function UpdateGuestForm() {
     date_of_birth: "",
   })
 
+  // State for managing form validation errors
   const [errors, setErrors] = useState<any>({})
+
+  // State for managing loading state
   const [loading, setLoading] = useState(true)
+
+  // State for managing form submission state
   const [submitting, setSubmitting] = useState(false)
 
+  // State for managing alert messages
   const [alert, setAlert] = useState<{
     title: string
     description?: string
     type: "success" | "error" | "info"
   } | null>(null)
 
+  // Fetch guest details on component mount
   useEffect(() => {
     if (!id) return
     setAlert({ title: "Loading guest...", description: "Please wait while we fetch the guest details.", type: "info" })
@@ -74,14 +84,17 @@ export default function UpdateGuestForm() {
     fetchGuest()
   }, [id])
 
+  // Handle form field changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.id]: e.target.value })
   }
 
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!id) return
 
+    // Validate form data
     const validationErrors = validateGuestForm(form)
     setErrors(validationErrors)
     if (Object.keys(validationErrors).length > 0) return

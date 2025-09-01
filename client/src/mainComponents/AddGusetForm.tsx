@@ -6,6 +6,8 @@ import { createGuest } from "@/Api/ApiFunctions"
 import { AlertDemo } from "@/Alert/AlertDemo"
 
 export default function AddGuestForm() {
+
+  // State for managing form data
   const [form, setForm] = useState({
     first_name: "",
     last_name: "",
@@ -15,26 +17,34 @@ export default function AddGuestForm() {
     date_of_birth: "",
   })
 
+  // State for managing form validation errors
   const [errors, setErrors] = useState<Record<string, string>>({})
+
+  // State for managing loading state
   const [loading, setLoading] = useState(false)
 
+  // State for managing alert messages
   const [alert, setAlert] = useState<{
     type: "success" | "error" | "info"
     title: string
     description?: string
   } | null>(null)
+  
 
+  // Handle alert message timeout
   useEffect(() => {
     if (!alert) return
     const t = setTimeout(() => setAlert(null), 3000)
     return () => clearTimeout(t)
   }, [alert])
 
+  // Handle form field changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.id]: e.target.value })
     setErrors({ ...errors, [e.target.id]: "" })
   }
 
+  // Validate form data
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
     if (!form.first_name.trim()) newErrors.first_name = "First name is required"
@@ -62,6 +72,7 @@ export default function AddGuestForm() {
     return newErrors
   }
 
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const newErrors = validateForm()
