@@ -50,7 +50,7 @@ const Navigation = () => {
           </div>
         </Link>  
 
-         <Link to="/guest-list">
+         <Link to="/">
           <div className="flex items-center gap-2 cursor-pointer hover:text-[#D4AF37]">
             <FaUsers /> <span>Guest List</span>
           </div>
